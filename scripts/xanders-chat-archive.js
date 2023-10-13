@@ -52,6 +52,7 @@ Hooks.on('renderChatLog', (event, html) => {
 	
 	//Implementing the archive button click functionality.
 	archiveButton.on('click', () => {
+		//If the form already exists, then it is brought to the top. Otherwise a new form is made.
 		if (newArchiveDialog == null) {
 			newArchiveDialog = new newChatArchiveDialog();
 			newArchiveDialog.render(true);

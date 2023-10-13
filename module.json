@@ -13,6 +13,6 @@
 		"verified": "10"
 	},	
 	"esmodules" : ["./scripts/xanders-chat-archive.js"],
-	"styles": [],
+	"styles": ["./styles/xanders-chat-archive.css"],
 	"packs": []
 }

@@ -1,0 +1,28 @@
+/* CSS Rules for the "New Archive" Dialog. */
+.archive-new table {
+	border: none;
+	background: none;
+	margin: 0px;
+}
+
+.archive-new table tr {
+	background: none;
+}
+
+.archive-new table tr:nth-child(even) {
+	background: none;
+}
+
+.archive-new table tr td:first-child {
+	text-align: right;
+	padding-right: 1em;
+}
+
+.archive-new tr td{
+	white-space: nowrap;
+}
+
+.archive-new input[type="datetime-local"]:disabled {
+	padding: 2px;
+	padding-left: 3px;
+}
