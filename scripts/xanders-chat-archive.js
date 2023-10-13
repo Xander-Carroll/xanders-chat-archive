@@ -1,17 +1,24 @@
 //This script: 
+//  Is the first script that will execute. The "main" method in a sense.
 //	Adds settings spesific to this module.
 //	Adds the "Archive Chat Log" button.
 //	Adds the "View Chat Archives" button.
 
 //IMPORTANT NOTE: 
-//  This script is a modified version of Dragon Flagoon's module DFChatEnhancements. The code present here
-//  was not entirely written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
+//  This script is a modified version of Dragon Flagoon's script from the DFChatEnhancements module. The code present here
+//  was mostly not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
 //  were entirely copied and pasted.
 
 //Changes from DF's module include:
 // 	Being ported from TS to JS. This code does not need compiled.
 //	Comments and code clairity improvements.
 //  Minor renaming and QOL improvements.
+
+import {newChatArchiveDialog} from "./newChatArchiveDialog.js";
+
+// Objects that will be used when a new archive is made, or when the archiver viewer is opened.
+let newArchiveDialog = null;
+let viewArchiveDialog = null;
 
 //This function will be called as soon as the module is loaded.
 Hooks.on("setup", () => {
@@ -45,7 +52,12 @@ Hooks.on('renderChatLog', (event, html) => {
 	
 	//Implementing the archive button click functionality.
 	archiveButton.on('click', () => {
-		alert("ARCHIVE!");
+		if (newArchiveDialog == null) {
+			newArchiveDialog = new newChatArchiveDialog();
+			newArchiveDialog.render(true);
+		} else {
+			newArchiveDialog.bringToTop();
+		}
 	});
 
 	//Adding the archive button to the page
@@ -72,3 +84,7 @@ Hooks.on('renderSettings', (event, html) => {
 	//Adding the view archives button to the page
 	html.find('#settings-game').append(archiveManagerHtml);
 });
+
+//Hooks that will clear the dialog variables when the dialogs are closed.
+Hooks.on('closenewChatArchiveDialog', () =>{newArchiveDialog = null});
+Hooks.on('closeviewChatArchiveDialog', () =>{viewArchiveDialog = null});
