@@ -34,7 +34,7 @@ export class ChatArchive{
 
 		// Add id of the most recent chat and replace special characters in name with underscores
 		let safeName = name + '_' + id;
-		safeName = safeName.replace(/[^ a-z0-9-_()[\]<>]/gi, '_');
+		safeName = safeName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
 		// Generate the system safe filename
 		const fileName = encodeURI(`${safeName}.json`);

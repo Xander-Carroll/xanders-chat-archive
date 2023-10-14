@@ -57,17 +57,17 @@ export class ChatArchiveViewer extends Application {
 			});
 
             //When the edit name button is pressed.
-			html.find("#edit").on('click', async () => {this._changeName()});
+			html.find("#edit").on('click', async () => {this._editArchiveData()});
 
             //Injects the message data into the viewer.
-            this._injectMessages(html);
+            await this._injectMessages(html);
 
 			return html;
 		});
 	}
 
-    //Called when the "edit name" button is pressed.
-    async _changeName(){
+    //Called when the "edit data" button is pressed.
+    async _editArchiveData(){
         let data = {
             name: this.archive.name,
             visible: this.archive.visible
@@ -101,7 +101,7 @@ export class ChatArchiveViewer extends Application {
                         }
                     }
                 },
-                default: 'close'
+                default: 'save'
             });
             dialog.render(true);
         }, 1);
@@ -114,10 +114,8 @@ export class ChatArchiveViewer extends Application {
         this.messages = (await ChatArchive.getArchiveContents(this.archive))
             .filter(x => game.user.isGM || x.user === game.userId || x.type !== CONST.CHAT_MESSAGE_TYPES.WHISPER || x.whisper.some(x => x === game.userId));
 
-        const deletionList = [];
+        let deletionList = [];
         const deleteButton = html.find('#al-save-changes');
-        deleteButton.hide();
-        
         for (const value of this.messages) {
             const chatMessage = value instanceof ChatMessage ? value : new ChatMessage(value);
             try {
@@ -151,6 +149,31 @@ export class ChatArchiveViewer extends Application {
 
         // Prepend the HTML
         log.prepend(messageHtml);
+
+        deleteButton.hide();
+        deleteButton.on('click', async () => {
+            console.log(deletionList);
+            if (deletionList.length === this.messages.length) {
+                ui.notifications.warn("You can't delete every chat message from the archive.");
+                return;
+            }
+            Dialog.confirm({
+                title: "Delete Chat Messages From Archive",
+                content: "<p>Are you sure that you want to delte these messages?</p>",
+                defaultYes: false,
+                yes: async () => {
+                    for (const id of deletionList) {
+                        const message = html.find(`li[data-message-id="${id}"]`);
+                        message.hide(500, () => {
+                            message.remove();
+                            this.render();
+                        });
+                    }
+                    this.messages = this.messages.filter((x) => !deletionList.includes(x._id));
+                    await ChatArchive.updateChatArchive(this.archive, this.messages);
+                }
+            });
+        });
     }
 
     //When the viewer is closed, it needs removed from the array in the ChatArchive object.
