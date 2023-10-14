@@ -1,0 +1,18 @@
+<section class="sidebar-tab tab flexcol" id="{{logId}}" data-tab="chat" style="display:flex">
+	<h2 style="display:flex;align-items:center">
+		<span style="flex:1 0">{{name}}</span>
+		{{#if isGM}}
+		<button id="edit" title="Change archive title." style="flex:0 0 auto;margin:0.25em 0;width:32px"><i class="fas fa-pencil-alt"></i></button>
+		<button id="import" title="Import archive to chat." style="flex:0 0 auto;margin:0.25em 0 0.25em 0.25em;width:auto"><i class="fa-solid fa-file-import"></i></button>
+		<button id="merge" title="Merge with another archive." style="flex:0 0 auto;margin:0.25em 0 0.25em 0.25em;width:auto"><i class="fas fa-sitemap" style="margin:0"></i></button>
+		{{/if}}
+	</h2>
+	{{#if isGM}}
+	<div style="display:flex;flex:0 0 auto;color:#FFF;flex-flow:row wrap">
+	<div style="flex:1 1 0"></div><input id="visible-{{logId}}" type="checkbox"{{#if visible}} checked{{/if}}/><label for="visible-{{logId}}" style="margin:auto 0">Visible to Players</label>
+	</div>
+	{{/if}}
+	<ol id="chat-log">
+	</ol>
+	<button id="al-save-changes"><i class="fas fa-save"></i> Save Changes</button>
+</section>

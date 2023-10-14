@@ -7,6 +7,7 @@
 //  were entirely copied and pasted.
 
 import {ChatArchive} from "./ChatArchive.js";
+import {ChatArchiveViewer} from "./ChatArchiveViewer.js";
 
 export class ManageChatArchiveDialog extends FormApplication{
     
@@ -59,29 +60,51 @@ export class ManageChatArchiveDialog extends FormApplication{
 		html.find('a[data-type="delete"]').each((i, element) => { this._subscribeDelete($(element), this); });
 
 		//When the delete all button is pressed, the user must confirm that they actually want to delete all logs.
-		html.find('#ca-delete-all').on('click', async function () {
-			await Dialog.confirm({
-				title: 'Delete All Archives',
-				content: '<p>Are you sure that you want to delete all archives?</p><p>This can not be undone.</p>',
-				defaultYes: false,
-				yes: async () => {
-					await Dialog.confirm({
-						title: 'Delete All Archives',
-						content: '<p>This is your last chance. Are you absolutely sure?</p>',
-						defaultYes: false,
-						yes: async () => {
-							await ChatArchive.deleteAll();
-							ui.notifications.info("All archives have been deleted.");
-						}
-					});
-				}
-			});
+		html.find('#ca-delete-all').on('click', () => {this._subscribeDeleteAll()});
+	}
+
+	//Called when the "delete all" button is pressed.
+	async _subscribeDeleteAll(){
+		await Dialog.confirm({
+			title: 'Delete All Archives',
+			content: '<p>Are you sure that you want to delete all archives?</p><p><b>This can not be undone.</b></p>',
+			defaultYes: false,
+			yes: async () => {
+				await Dialog.confirm({
+					title: 'Delete All Archives',
+					content: '<p><b>This is your last chance.</b> Are you absolutely sure?</p>',
+					defaultYes: false,
+					yes: async () => {
+						await ChatArchive.deleteAll();
+						ui.notifications.info("All archives have been deleted.");
+					}
+				});
+			}
 		});
 	}
 
 	//Called whenever a view button is pressed.
 	_subscribeView(element, form){
-		
+		element.on('click', function () {
+			//Finding the archive with the given id.
+			const id = $(this).attr('data-id');
+
+			//Ensuring that the archive exists.
+			if (!id || !ChatArchive.exists(id)) {
+				ui.notifications.error('DF_CHAT_ARCHIVE.ArchiveManager_ErrorBadId'.localize());
+				throw Error(`Invalid id for Chat Archive: '${$(this).attr('data-id')}'`);
+			}
+			
+			//If a viewer is already open, it is brought to the top. Otherwise a new viewer is made.
+			if (ChatArchive.chatViewers.has(id)) {
+				ChatArchive.chatViewers.get(id).bringToTop();
+			} else {
+				ChatArchive.chatViewers.set(id, new ChatArchiveViewer(ChatArchive.getArchive(id), view => {
+					ChatArchive.chatViewers.delete(view.archive.id);
+				}));
+				ChatArchive.chatViewers.get(id).render(true);
+			}
+		});
 	}
 
 	//Called whenever a delete button is pressed.
@@ -90,6 +113,7 @@ export class ManageChatArchiveDialog extends FormApplication{
 			//Finding the archive with the given id.
 			const id = element.attr('data-id');
 
+			//Ensuring that the archive exists.
 			if (!id || !ChatArchive.exists(id)) {
 				ui.notifications.error("An archive could not be delted. The given id does not exist.");
 				throw Error(`Invalid id for Chat Archive: '${$(this).attr('data-id')}'`);

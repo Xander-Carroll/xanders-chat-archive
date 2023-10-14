@@ -1,6 +1,8 @@
 //This script: 
 //  The model for a "Chat Archive" object.
 //  Will create a folder for chat archives and the JSON files which represent each archive.
+//	Will 'delete' or clear files.
+//	Holds all of the currently open viewer objects.
 
 //IMPORTANT NOTE: 
 //  This script is a modified version of Dragon Flagoon's script from the DFChatEnhancements module. The code present here
@@ -117,6 +119,8 @@ export class ChatArchive{
 		game.settings.set("xanders-chat-archive", "chatArchiveLog", logs);
 	}
 
+	//A collection of all the currently open chat archive viewers.
+	static chatViewers = [];
 }
 
 //A dialog which the user can use to set their preffered output file location.

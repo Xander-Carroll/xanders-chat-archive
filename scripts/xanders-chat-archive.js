@@ -16,7 +16,9 @@
 
 import {NewChatArchiveDialog} from "./NewChatArchiveDialog.js";
 import {ArchiveFolderMenu} from "./ChatArchive.js";
-import {ManageChatArchiveDialog} from "./ManageChatArchiveDialog.js"
+import {ManageChatArchiveDialog} from "./ManageChatArchiveDialog.js";
+import {ChatArchive} from "./ChatArchive.js";
+
 
 // Objects that will be used when a new archive is made, or when the archiver viewer is opened.
 let newArchiveDialog = null;
@@ -27,6 +29,7 @@ Hooks.on("setup", () => {
 	//Registers all of the settings that the user can change for this module.
 	registerSettings();
 	ArchiveFolderMenu.createArchiveFolderIfMissing();
+	ChatArchive.chatViewers = new Collection();
 });
 
 //All of the settings that this module adds are registered here.
