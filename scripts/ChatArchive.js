@@ -11,8 +11,16 @@
 export class ChatArchive{
 	//Should be called with an array of chat objects to create a new archive.
 	static async createChatArchive(name, chats, visible){
+		//Creating the archive file.
 		const newId = randomID();
 		const entry = await this._generateChatArchiveFile(newId, name, chats, visible);
+
+		//Adding the archive to the log.
+		const logs = game.settings.get("xanders-chat-archive", "chatArchiveLog");
+		logs.push(entry);
+		await game.settings.set("xanders-chat-archive", "chatArchiveLog", logs);
+
+		//Returning the archive data
 		return entry;
 	}
 
@@ -24,7 +32,7 @@ export class ChatArchive{
 
 		// Add id of the most recent chat and replace special characters in name with underscores
 		let safeName = name + '_' + id;
-		safeName = safeName.replace("/[^ a-z0-9-_()[\]<>]/gi ", '_');
+		safeName = safeName.replace(/[^ a-z0-9-_()[\]<>]/gi, '_');
 
 		// Generate the system safe filename
 		const fileName = encodeURI(`${safeName}.json`);
@@ -49,6 +57,11 @@ export class ChatArchive{
 		};
 
 		return entry;
+	}
+
+	//Returns a list of archive entries from the given logs.
+	static getLogs(){ 
+		return game.settings.get("xanders-chat-archive", "chatArchiveLog");
 	}
 
 }
@@ -87,7 +100,7 @@ export class ArchiveFolderMenu extends FormApplication {
 		});
 	}
 
-	//This function is called when the submit button is pressed.
+	//This function is called to add data to the form before it is rendered.
 	//@override
 	getData(_options){
 		return { path: game.settings.get("xanders-chat-archive", "archiveFolderName")};

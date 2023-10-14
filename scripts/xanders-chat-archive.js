@@ -16,10 +16,11 @@
 
 import {NewChatArchiveDialog} from "./NewChatArchiveDialog.js";
 import {ArchiveFolderMenu} from "./ChatArchive.js";
+import {ManageChatArchiveDialog} from "./ManageChatArchiveDialog.js"
 
 // Objects that will be used when a new archive is made, or when the archiver viewer is opened.
 let newArchiveDialog = null;
-let viewArchiveDialog = null;
+let manageArchiveDialog = null;
 
 //This function will be called as soon as the module is loaded.
 Hooks.on("setup", () => {
@@ -73,6 +74,14 @@ export function registerSettings(){
 		type: String,
 		default: 'data'
 	});
+
+	//The variable which contains all of the saved logs and their IDs.
+	game.settings.register("xanders-chat-archive", "chatArchiveLog", {
+		scope: 'world',
+		config: false,
+		type: Object,
+		default: []
+	});
 }
 
 //When the chat log is fully rendered, the "archive chat log" button is added, and the "export chat log" button is removed if necessary.
@@ -109,7 +118,13 @@ Hooks.on('renderSettings', (event, html) => {
 
 	//Implementing the view archives button click functionality.
 	archiveManagerHtml.on('click', () => {
-		alert("VIEW ARCHIVES!")
+		//If the form already exists, then it is brought to the top. Otherwise a new form is made.
+		if (manageArchiveDialog == null) {
+			manageArchiveDialog = new ManageChatArchiveDialog();
+			manageArchiveDialog.render(true);
+		} else {
+			manageArchiveDialog.bringToTop();
+		}
 	});
 
 	//Adding the view archives button to the page
@@ -118,4 +133,4 @@ Hooks.on('renderSettings', (event, html) => {
 
 //Hooks that will clear the dialog variables when the dialogs are closed.
 Hooks.on('closeNewChatArchiveDialog', () =>{newArchiveDialog = null});
-Hooks.on('closeViewChatArchiveDialog', () =>{viewArchiveDialog = null});
+Hooks.on('closeManageChatArchiveDialog', () =>{manageArchiveDialog = null});
