@@ -8,7 +8,7 @@
     }
     ],
 	"url": "https://github.com/Xander-Carroll/xanders-chat-archive",
-	"manifest": "https://github.com/Xander-Carroll/xanders-chat-archive/releases/latest/downlaod/module.json",
+	"manifest": "https://github.com/Xander-Carroll/xanders-chat-archive/releases/latest/download/module.json",
 	"version": "1.0.1",
 	"compatibility": {
 		"minimum": "9",
