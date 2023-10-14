@@ -15,6 +15,9 @@ export class NewChatArchiveDialog extends FormApplication{
             template: "modules/xanders-chat-archive/scripts/templates/new-archive.html",
             resizable: false,
             minimizable: false,
+            submitOnClose: false,
+			submitOnChange: false,
+			closeOnSubmit: true,
             title: "Create New Chat Archive"
         });
     }

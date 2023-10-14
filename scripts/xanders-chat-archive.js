@@ -117,5 +117,5 @@ Hooks.on('renderSettings', (event, html) => {
 });
 
 //Hooks that will clear the dialog variables when the dialogs are closed.
-Hooks.on('closenewChatArchiveDialog', () =>{newArchiveDialog = null});
-Hooks.on('closeviewChatArchiveDialog', () =>{viewArchiveDialog = null});
+Hooks.on('closeNewChatArchiveDialog', () =>{newArchiveDialog = null});
+Hooks.on('closeViewChatArchiveDialog', () =>{viewArchiveDialog = null});

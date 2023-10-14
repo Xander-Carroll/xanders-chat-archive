@@ -11,14 +11,44 @@
 export class ChatArchive{
 	//Should be called with an array of chat objects to create a new archive.
 	static async createChatArchive(name, chats, visible){
-		const newId = chats.contents[0].id;
+		const newId = randomID();
 		const entry = await this._generateChatArchiveFile(newId, name, chats, visible);
 		return entry;
 	}
 
 	//Will be called from the createChatArchive function, and will create a JSON file for the archive.
 	static async _generateChatArchiveFile(id, name, chats, visible){
-		alert("File Being Made Now...");
+		// Getting the folder path
+		const folder = game.settings.get("xanders-chat-archive", "archiveFolderName");
+		const source = game.settings.get("xanders-chat-archive", "archiveSourceFolderName");
+
+		// Add id of the most recent chat and replace special characters in name with underscores
+		let safeName = name + '_' + id;
+		safeName = safeName.replace("/[^ a-z0-9-_()[\]<>]/gi ", '_');
+
+		// Generate the system safe filename
+		const fileName = encodeURI(`${safeName}.json`);
+
+		// Create the File and save it.
+		const file = new File([JSON.stringify(chats, null, '')], fileName, { type: 'application/json' });
+		const response = await FilePicker.upload(source, folder, file);
+
+		//If saving the file failed, catch the error.
+		if (!response.path) {
+			console.error(`Could not create archive ${fileName}\nReason: ${response}`);
+			throw new Error('Could not upload the archive to server: ' + fileName);
+		}
+
+		//Creating the return data, and returning it.
+		const entry = {
+			id: id,
+			name: name,
+			visible: visible,
+			filepath: response.path,
+			filename: fileName
+		};
+
+		return entry;
 	}
 
 }
