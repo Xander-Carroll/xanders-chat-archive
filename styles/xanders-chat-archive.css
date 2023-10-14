@@ -26,3 +26,11 @@
 	padding: 2px;
 	padding-left: 3px;
 }
+
+
+/* CSS Rules for the "Folder Picker" settings Dialog. */
+.archive-folder-picker{
+	min-height: 120px;
+	max-height: 120px;
+	min-width: 315px;
+}

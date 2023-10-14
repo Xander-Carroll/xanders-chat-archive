@@ -14,7 +14,8 @@
 //	Comments and code clairity improvements.
 //  Minor renaming and QOL improvements.
 
-import {newChatArchiveDialog} from "./newChatArchiveDialog.js";
+import {NewChatArchiveDialog} from "./NewChatArchiveDialog.js";
+import {ArchiveFolderMenu} from "./ChatArchive.js";
 
 // Objects that will be used when a new archive is made, or when the archiver viewer is opened.
 let newArchiveDialog = null;
@@ -24,10 +25,20 @@ let viewArchiveDialog = null;
 Hooks.on("setup", () => {
 	//Registers all of the settings that the user can change for this module.
 	registerSettings();
+	ArchiveFolderMenu.createArchiveFolderIfMissing();
 });
 
 //All of the settings that this module adds are registered here.
 export function registerSettings(){
+	//Creates the menu that allows the user to choose a folder.
+	game.settings.registerMenu("xanders-chat-archive", "archiveFolderName", {
+		name: 'Choose Archive Folder',
+		label: 'Choose Archive Folder',
+		hint: 'Will allow you to choose the folder where you would like to store your archive data.',
+		restricted: true,
+		type: ArchiveFolderMenu
+	});
+	
 	//Adds the "Hide Chat Export Button setting and implements its functionality."
 	game.settings.register("xanders-chat-archive", "hideExport", {
 		config: true,
@@ -43,6 +54,25 @@ export function registerSettings(){
 				$('#chat-controls .export-log').hide();
 		}
 	});
+
+	//A variable which contains the folder name for the archive folder.
+	game.settings.register("xanders-chat-archive", "archiveFolderName", {
+		scope: 'world',
+		config: false,
+		type: String,
+		default: `worlds/${game.world.id}/chat-archive`,
+		onChange: async () => {
+			await ArchiveFolderMenu.createArchiveFolderIfMissing();
+		}
+	});
+
+	//A variable which contains the source folder name for the archive folder. "data, core, etc"
+	game.settings.register("xanders-chat-archive", "archiveSourceFolderName", {
+		scope: 'world',
+		config: false,
+		type: String,
+		default: 'data'
+	});
 }
 
 //When the chat log is fully rendered, the "archive chat log" button is added, and the "export chat log" button is removed if necessary.
@@ -54,7 +84,7 @@ Hooks.on('renderChatLog', (event, html) => {
 	archiveButton.on('click', () => {
 		//If the form already exists, then it is brought to the top. Otherwise a new form is made.
 		if (newArchiveDialog == null) {
-			newArchiveDialog = new newChatArchiveDialog();
+			newArchiveDialog = new NewChatArchiveDialog();
 			newArchiveDialog.render(true);
 		} else {
 			newArchiveDialog.bringToTop();
