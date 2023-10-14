@@ -44,5 +44,8 @@
     "CA.HideChatExportButton": "Hide Chat Export Button",
     "CA.HideChatExportButtonHint": "This will remove the \"Export Chat Log\" button, leaving only the archive button.",
     "CA.ArchiveChatLog": "Archive Chat Log",
-    "CA.ViewChatArchives": "View Chat Archives"
+    "CA.ViewChatArchives": "View Chat Archives",
+    "CA.ImportArchive": "Import Archive",
+    "CA.ImportArchiveConfirmation": "<p>Are you sure that you want to import this archive?</p>",
+    "CA.CancelImport": "Cancel Import"
 }

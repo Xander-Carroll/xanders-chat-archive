@@ -8,17 +8,21 @@
 
 import {ChatArchive} from "./ChatArchive.js";
 
-export class ChatArchiveViewer extends Application {
+export class ChatArchiveViewer extends Application {    
     //The log data for the archive that is currently being viewed.
     archive = null;
     closeCallback = null;
     messages = null;
+    diceSoNiceHookId = null;
 
     //You must supply log data to open a new viewer.
     constructor(archive, closeCallback) {
 		super();
 		this.archive = archive;
         this.closeCallback = closeCallback;
+
+        //Used to hide diceSoNice rolls when importing chat messages.
+        this.diceSoNiceHookId = Hooks.on('diceSoNiceRollStart', this._diceSoNiceRoll);
 	}
 
 	//@override
@@ -55,6 +59,9 @@ export class ChatArchiveViewer extends Application {
 
             //When the merge button is pressed.
             html.find("#merge").on('click', async () => {this._mergeArchiveData(html)});
+
+            //When the import button is pressed.
+            html.find("#import").on('click', async () => {this._importArchiveData()});
 
             //Injects the message data into the viewer.
             await this._injectMessages(html);
@@ -153,6 +160,48 @@ export class ChatArchiveViewer extends Application {
         await dialog.render(true);
     }
 
+    //Called when the "import" button is pressed.
+    async _importArchiveData(){
+        const dialog = new Dialog({
+            title: game.i18n.localize("CA.ImportArchive"),
+            default: 'import',
+            content: game.i18n.localize("CA.ImportArchiveConfirmation"),
+            buttons: {
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: game.i18n.localize("CA.CancelImport"),
+                    callback: async () => await dialog.close()
+                },
+                import: {
+                    icon: '<i class="fa-solid fa-file-import"></i>',
+                    label: game.i18n.localize("CA.ImportArchive"),
+                    callback: async (html) => {
+                        const id = this.archive.id;
+                        if (!id) return;
+
+                        //Getting the chats from both archives and concatinating them.
+                        const messages = await ChatArchive.getArchiveContents(this.archive)
+
+                        //Importing the chat messages.
+                        for (const value of messages) {
+                            //Marking the chat so that the imported messages aren't rolled.
+                            //We don't need to reroll any dice. We only want to view what has already happened.
+                            value.flags = {"caImport": true};
+                            value.sound = null;
+
+                            //Creating the cht message for each entry.
+                            await ChatMessage.create(value);
+                        }
+
+                        //Closing the current viewer.
+                        this.close();
+                    }
+                }
+            }
+        });
+        await dialog.render(true);
+    }
+
     //Inserts the chat messages into the archive viewer.
     async _injectMessages(html){
         const log = html.find('#chat-log');
@@ -225,7 +274,21 @@ export class ChatArchiveViewer extends Application {
     //@override
     close(options){
 		this.closeCallback(this);
+
+        //Unregestering the diceSoNice hook if it was being used.
+        if(this.diceSoNiceHookId != null)
+            Hooks.off('diceSoNiceRollStart', this.diceSoNiceHookId);
+
 		return super.close(options);
 	}
 
+    //Used to hide diceSoNice rolls when importing chat messages.
+    _diceSoNiceRoll(messageId, context){
+        console.log("Here");
+        if(!game.messages.get(messageId).flags.caImport) 
+            return;
+    
+        //Hide this roll
+        context.blind=true;
+    }
 }
