@@ -50,14 +50,11 @@ export class ChatArchiveViewer extends Application {
 	//@override
     _renderInner(data){
 		return (super._renderInner(data)).then(async (html) => {
-            //When the "visible to players" checkbox is changed.
-            html.find("#visible-chat-log-" + this.archive.id).on('change', async (element) => {
-				this.archive.visible = (element.target).checked;
-				await ChatArchive.updateChatArchive(this.archive);
-			});
-
             //When the edit name button is pressed.
 			html.find("#edit").on('click', async () => {this._editArchiveData()});
+
+            //When the merge button is pressed.
+            html.find("#merge").on('click', async () => {this._mergeArchiveData(html)});
 
             //Injects the message data into the viewer.
             await this._injectMessages(html);
@@ -104,6 +101,58 @@ export class ChatArchiveViewer extends Application {
         }, 1);
     }
     
+    //Called when the "merge" button is pressed.
+    async _mergeArchiveData(html){
+        let logs = ChatArchive.getLogs();
+
+        //Warning the user if this is the only archive.
+        if (logs.length == 1) {
+            ui.notifications.info("There are no other archives to merge with.");
+            return;
+        }
+
+        const dialog = new Dialog({
+            title: "Merge Archives",
+            default: 'merge',
+            content: await renderTemplate('modules/xanders-chat-archive/scripts/templates/archive-merge.html', {
+                id: this.archive.id,
+                name: this.archive.name,
+                archives: logs.filter(x => x.id != this.archive.id)
+            }),
+            buttons: {
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Cancel Merge',
+                    callback: async () => await dialog.close()
+                },
+                merge: {
+                    icon: '<i class="fas fa-sitemap"></i>',
+                    label: 'Finish Merge',
+                    callback: async (html) => {
+                        const id = $(html).find('#archive').val();
+                        if (!id) return;
+
+                        //Getting the chats from both archives and concatinating them.
+                        const source = ChatArchive.getLogs().find(x => x.id == id);
+                        const currentChats = await ChatArchive.getArchiveContents(this.archive);
+                        const sourceChats = await ChatArchive.getArchiveContents(source);
+                        const mergedChats = (currentChats).concat(sourceChats).sort((a, b) => a.timestamp - b.timestamp);
+
+                        //Updating the current archive and rerendering it.
+                        await ChatArchive.updateChatArchive(this.archive, mergedChats);
+                        this.render(true);
+
+                        //Deleting the merged archive if the checkbox was checked.
+                        if (($(html).find('#delete-' + this.archive.id)[0]).checked) {
+                            await ChatArchive.deleteChatArchive(id);
+                        }
+                    }
+                }
+            }
+        });
+        await dialog.render(true);
+    }
+
     //Inserts the chat messages into the archive viewer.
     async _injectMessages(html){
         const log = html.find('#chat-log');
