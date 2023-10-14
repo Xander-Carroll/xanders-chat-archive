@@ -1,12 +1,14 @@
 //This script: 
-//  The model for a "Chat Archive" object.
 //  Will create a folder for chat archives and the JSON files which represent each archive.
-//	Will 'delete' or clear files.
+//	Will 'delete' or clear archive JSON files.
+//  Will write archive files to JSON.
+//  Contains many helper and utillity functions for parsing Archive data.
 //	Holds all of the currently open viewer objects.
+//  When the settings menu button for choosing a folder to store data in is clicked, a new ArchiveColderMenu form is opened.
 
 //IMPORTANT NOTE: 
 //  This script is a modified version of Dragon Flagoon's script from the DFChatEnhancements module. The code present here
-//  was mostly not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
+//  was modified by me, not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
 //  were entirely copied and pasted.
 
 //The ChatArchive data object and functions to save and load the object files.

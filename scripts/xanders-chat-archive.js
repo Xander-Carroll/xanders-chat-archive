@@ -6,13 +6,8 @@
 
 //IMPORTANT NOTE: 
 //  This script is a modified version of Dragon Flagoon's script from the DFChatEnhancements module. The code present here
-//  was mostly not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
+//  was modified by me, not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
 //  were entirely copied and pasted.
-
-//Changes from DF's module include:
-// 	Being ported from TS to JS. This code does not need compiled.
-//	Comments and code clairity improvements.
-//  Minor renaming and QOL improvements.
 
 import {NewChatArchiveDialog} from "./NewChatArchiveDialog.js";
 import {ArchiveFolderMenu} from "./ChatArchive.js";

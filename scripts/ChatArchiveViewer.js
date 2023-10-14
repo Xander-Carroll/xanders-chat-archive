@@ -3,7 +3,7 @@
 
 //IMPORTANT NOTE: 
 //  This script is a modified version of Dragon Flagoon's script from the DFChatEnhancements module. The code present here
-//  was mostly not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
+//  was modified by me, not written by me. Some portions of the code were just inspired by Dragon Flagoon's module, while others 
 //  were entirely copied and pasted.
 
 import {ChatArchive} from "./ChatArchive.js";

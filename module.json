@@ -1,13 +1,13 @@
 {
 	"name": "xanders-chat-archive",
 	"title": "Xander's Chat Archiver",
-	"description": "A module that gives the abillity to archive the chat log for later viewing.",
+	"description": "A module that gives the abillity to archive your chat logs for later viewing.",
 	"authors": [
     {
     "name": "Xander"
     }
     ],
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"compatibility": {
 		"minimum": "9",
 		"verified": "10"
