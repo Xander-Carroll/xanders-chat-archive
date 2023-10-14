@@ -64,6 +64,59 @@ export class ChatArchive{
 		return game.settings.get("xanders-chat-archive", "chatArchiveLog");
 	}
 
+	//Returns the archive with the given id.
+	static getArchive(id) { 
+		return this.getLogs().find(x => x.id == id); 
+	}
+
+	//Returns true if an archive with the given id exists.
+	static exists(id) { 
+		return !!this.getLogs().find(x => x.id == id); 
+	}
+
+	//Deletes all of the chat archives.
+	static async deleteAll() {
+		const folder = game.settings.get("xanders-chat-archive", "archiveFolderName");
+		const source = game.settings.get("xanders-chat-archive", "archiveSourceFolderName");
+		const logs = game.settings.get("xanders-chat-archive", "chatArchiveLog");
+
+		//Files can't be deleted. Instead the files are cleared to save memory.
+		await Promise.all(logs.map(archive => {
+			const file = new File([''], archive.filename, { type: 'application/json' });
+			return FilePicker.upload(source, folder, file, {});
+		}));
+
+		//Clearing the archvie log.
+		game.settings.set("xanders-chat-archive", "chatArchiveLog", []);
+	}
+
+	//Deletes the chat archive with the given id.
+	static async deleteChatArchive(id) {
+		const folder = game.settings.get("xanders-chat-archive", "archiveFolderName");
+		const source = game.settings.get("xanders-chat-archive", "archiveSourceFolderName");
+		const logs = game.settings.get("xanders-chat-archive", "chatArchiveLog");
+
+		//Getting the index of the log to be deleted.
+		const entryIdx = logs.findIndex(x => x.id === id);
+
+		//If the id wasn't found, return with an error.
+		if (entryIdx < 0) {
+			console.error(`Could not find entry for ID#${id}`);
+			return;
+		}
+
+		//Getting the entry which should be deleted.
+		const entry = logs[entryIdx];
+
+		//Files can't be deleted. Instead the files are cleared to save memory.
+		const file = new File([''], entry.filename, { type: 'application/json' });
+		await FilePicker.upload(source, folder, file, {});
+
+		//Removing the file from the log.
+		logs.splice(entryIdx, 1);
+		game.settings.set("xanders-chat-archive", "chatArchiveLog", logs);
+	}
+
 }
 
 //A dialog which the user can use to set their preffered output file location.

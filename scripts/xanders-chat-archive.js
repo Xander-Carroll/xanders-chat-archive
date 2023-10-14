@@ -80,7 +80,12 @@ export function registerSettings(){
 		scope: 'world',
 		config: false,
 		type: Object,
-		default: []
+		default: [],
+		onChange: () => {
+			if (manageArchiveDialog != null){
+				manageArchiveDialog.render();
+			}
+		}
 	});
 }
 
