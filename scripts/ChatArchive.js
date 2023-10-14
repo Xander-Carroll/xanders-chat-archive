@@ -120,8 +120,29 @@ export class ChatArchive{
 	}
 
 	//Updates the given chat archive.
-	static async updateChatArchive(archive){
-		alert("Updating!");
+	static async updateChatArchive(archive, newChatData){
+		const folder = game.settings.get("xanders-chat-archive", "archiveFolderName");
+		const source = game.settings.get("xanders-chat-archive", "archiveSourceFolderName");
+		
+
+		if (!this.getLogs().find(x => x.id == archive.id))
+			throw new Error('Could not locate an archive for the given ID: ' + archive.id.toString());
+		
+		// If we are updating the contents of an archive
+		if (newChatData) {
+			const file = new File([JSON.stringify(newChatData)], archive.filename, { type: 'application/json' });
+			const response = await FilePicker.upload(source, folder, file, {});
+			if (!response.path)
+				throw new Error('Could not upload the archive to server side: ' + archive.id.toString());
+		}
+
+		const logs = this.getLogs();
+		const idx = logs.findIndex(x => x.id === archive.id);
+		if (idx < 0) return archive;
+		logs[idx] = archive;
+
+		await game.settings.set("xanders-chat-archive", "chatArchiveLog", logs);
+		return archive;
 	}
 
 	//Returns the contents of an archive as chat message data.

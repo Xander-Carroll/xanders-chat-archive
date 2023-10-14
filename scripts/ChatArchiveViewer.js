@@ -68,16 +68,26 @@ export class ChatArchiveViewer extends Application {
 
     //Called when the "edit name" button is pressed.
     async _changeName(){
+        let data = {
+            name: this.archive.name,
+            visible: this.archive.visible
+        }
+
         setTimeout(async () => {
             const dialog = new Dialog({
-                title: "Change Archive Title",
-                content: `<input id="name" type="text" value="${this.archive.name}"/>`,
+                title: "Edit Archive Data",
+                content: await renderTemplate("modules/xanders-chat-archive/scripts/templates/archive-editor.html", data),
                 buttons: {
                     save: {
                         icon: '<i class="fas fa-save"></i>',
-                        label: 'Save Name',
+                        label: 'Save Edits',
                         callback: async (html) => {
                             this.archive.name = $(html).find('#name').val();
+                            this.archive.visible = $(html).find('#visible').is(':checked');
+
+                            console.log($(html).find('#visible'));
+                            console.log(this.archive.visible);
+
                             await dialog.close();
                             await ChatArchive.updateChatArchive(this.archive);
                             await this.render(false);
@@ -85,13 +95,13 @@ export class ChatArchiveViewer extends Application {
                     },
                     close: {
                         icon: '<i class="fas fa-times"></i>',
-                        label: 'Cancel Name Change',
+                        label: 'Cancel Edits',
                         callback: async () => {
                             await dialog.close();
                         }
                     }
                 },
-                default: 'save'
+                default: 'close'
             });
             dialog.render(true);
         }, 1);
