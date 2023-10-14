@@ -127,11 +127,6 @@ export class ChatArchiveViewer extends Application {
                 archives: logs.filter(x => x.id != this.archive.id)
             }),
             buttons: {
-                cancel: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("CA.CancelMerge"),
-                    callback: async () => await dialog.close()
-                },
                 merge: {
                     icon: '<i class="fas fa-sitemap"></i>',
                     label: game.i18n.localize("CA.FinishMerge"),
@@ -154,6 +149,11 @@ export class ChatArchiveViewer extends Application {
                             await ChatArchive.deleteChatArchive(id);
                         }
                     }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: game.i18n.localize("CA.CancelMerge"),
+                    callback: async () => await dialog.close()
                 }
             }
         });
@@ -167,11 +167,6 @@ export class ChatArchiveViewer extends Application {
             default: 'import',
             content: game.i18n.localize("CA.ImportArchiveConfirmation"),
             buttons: {
-                cancel: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("CA.CancelImport"),
-                    callback: async () => await dialog.close()
-                },
                 import: {
                     icon: '<i class="fa-solid fa-file-import"></i>',
                     label: game.i18n.localize("CA.ImportArchive"),
@@ -196,6 +191,11 @@ export class ChatArchiveViewer extends Application {
                         //Closing the current viewer.
                         this.close();
                     }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: game.i18n.localize("CA.CancelImport"),
+                    callback: async () => await dialog.close()
                 }
             }
         });
