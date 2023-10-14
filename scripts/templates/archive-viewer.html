@@ -1,4 +1,4 @@
-<section class="sidebar-tab tab flexcol" id="{{logId}}" data-tab="chat" style="display:flex">
+<section class="sidebar-tab tab flexcol" id="{{logId}}" data-tab="chat" style="display:flex; height:fit-content;">
 	<h2 style="display:flex;align-items:center">
 		<span style="flex:1 0">{{name}}</span>
 		{{#if isGM}}
@@ -8,7 +8,7 @@
 		{{/if}}
 	</h2>
 	{{#if isGM}}
-	<div style="display:flex;flex:0 0 auto;color:#FFF;flex-flow:row wrap">
+	<div style="display:flex;flex:0 0 auto;color:#FFF;flex-flow:row wrap; margin-bottom:3px;">
 	<div style="flex:1 1 0"></div><input id="visible-{{logId}}" type="checkbox"{{#if visible}} checked{{/if}}/><label for="visible-{{logId}}" style="margin:auto 0">Visible to Players</label>
 	</div>
 	{{/if}}

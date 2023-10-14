@@ -119,6 +119,23 @@ export class ChatArchive{
 		game.settings.set("xanders-chat-archive", "chatArchiveLog", logs);
 	}
 
+	//Updates the given chat archive.
+	static async updateChatArchive(archive){
+		alert("Updating!");
+	}
+
+	//Returns the contents of an archive as chat message data.
+	static async getArchiveContents(archive) {
+		const response = await fetch(archive.filepath);
+		const data = await response.json().catch(error => console.error(`Failed to read JSON for archive ${archive.filepath}\n${error}`));
+
+		//Throwing an error if the response was bad.
+		if (response.ok)
+			return data;
+		else
+			throw new Error('Could not access the archive from server side: ' + archive.filepath);
+	}
+
 	//A collection of all the currently open chat archive viewers.
 	static chatViewers = [];
 }

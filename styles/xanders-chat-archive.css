@@ -107,8 +107,9 @@
 
 #chat-log {
 	margin-block-start: 0;
-	padding-inline-start: 0;
-	overflow-y: scroll;
+    padding-inline-start: 0;
+    overflow-y: scroll;
+    flex: 1 1 0;
 }
 
 .archive-viewer .window-content {
@@ -156,8 +157,7 @@ body.chat-print {
 
 #al-save-changes {
 	background: rgb(128, 20, 20);
-	color: white;
-	flex: 0 0 auto;
-	margin: 0 2em;
-	width: auto;
+    color: white;
+    flex: 0 0 auto;
+    margin-top: 8px;
 }
