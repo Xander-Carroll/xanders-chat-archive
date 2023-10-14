@@ -85,9 +85,6 @@ export class ChatArchiveViewer extends Application {
                             this.archive.name = $(html).find('#name').val();
                             this.archive.visible = $(html).find('#visible').is(':checked');
 
-                            console.log($(html).find('#visible'));
-                            console.log(this.archive.visible);
-
                             await dialog.close();
                             await ChatArchive.updateChatArchive(this.archive);
                             await this.render(false);
@@ -152,7 +149,6 @@ export class ChatArchiveViewer extends Application {
 
         deleteButton.hide();
         deleteButton.on('click', async () => {
-            console.log(deletionList);
             if (deletionList.length === this.messages.length) {
                 ui.notifications.warn("You can't delete every chat message from the archive.");
                 return;

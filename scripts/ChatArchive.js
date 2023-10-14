@@ -189,7 +189,6 @@ export class ArchiveFolderMenu extends FormApplication {
 
 		//We try to open the given folder, if it can't be opened then we try to create one.
 		await FilePicker.browse(source, folder).catch(async _ => {
-			console.log(source);
 			if (!await FilePicker.createDirectory(source, folder, {}))
 				throw new Error('Could not access the archive folder: ' + folder);
 		});
