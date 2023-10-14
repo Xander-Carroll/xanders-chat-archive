@@ -66,17 +66,17 @@ export class ManageChatArchiveDialog extends FormApplication{
 	//Called when the "delete all" button is pressed.
 	async _subscribeDeleteAll(){
 		await Dialog.confirm({
-			title: 'Delete All Archives',
-			content: '<p>Are you sure that you want to delete all archives?</p><p><b>This can not be undone.</b></p>',
+			title: game.i18n.localize("CA.DeleteAllArchives"),
+			content: game.i18n.localize("CA.DeleteAllArchivesConfirm1"),
 			defaultYes: false,
 			yes: async () => {
 				await Dialog.confirm({
-					title: 'Delete All Archives',
-					content: '<p><b>This is your last chance.</b> Are you absolutely sure?</p>',
+					title: game.i18n.localize("CA.DeleteAllArchives"),
+					content: game.i18n.localize("CA.DeleteAllArchivesConfirm2"),
 					defaultYes: false,
 					yes: async () => {
 						await ChatArchive.deleteAll();
-						ui.notifications.info("All archives have been deleted.");
+						ui.notifications.info(game.i18n.localize("CA.AllArchivesDeleted"));
 					}
 				});
 			}
@@ -91,7 +91,7 @@ export class ManageChatArchiveDialog extends FormApplication{
 
 			//Ensuring that the archive exists.
 			if (!id || !ChatArchive.exists(id)) {
-				ui.notifications.error('DF_CHAT_ARCHIVE.ArchiveManager_ErrorBadId'.localize());
+				ui.notifications.error(game.i18n.localize("CA.NoArchiveExists"));
 				throw Error(`Invalid id for Chat Archive: '${$(this).attr('data-id')}'`);
 			}
 			
@@ -115,7 +115,7 @@ export class ManageChatArchiveDialog extends FormApplication{
 
 			//Ensuring that the archive exists.
 			if (!id || !ChatArchive.exists(id)) {
-				ui.notifications.error("An archive could not be delted. The given id does not exist.");
+				ui.notifications.error(game.i18n.localize("CA.NoArchiveExists"));
 				throw Error(`Invalid id for Chat Archive: '${$(this).attr('data-id')}'`);
 			}
 
@@ -123,8 +123,8 @@ export class ManageChatArchiveDialog extends FormApplication{
 			const archive = ChatArchive.getArchive(id);
 
 			await Dialog.confirm({
-				title: "Delete Archive",
-				content: "Are you sure that you want to delete {name}?".replace('{name}', archive.name),
+				title: game.i18n.localize("CA.DeleteArchive"),
+				content: game.i18n.localize("CA.DeleteArchiveConfirm").replace('{name}', archive.name),
 				defaultYes: false,
 				yes: async () => {
 					await ChatArchive.deleteChatArchive(id);

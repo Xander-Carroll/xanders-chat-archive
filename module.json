@@ -14,5 +14,12 @@
 	},	
 	"esmodules" : ["./scripts/xanders-chat-archive.js"],
 	"styles": ["./styles/xanders-chat-archive.css"],
+	"languages": [
+		{
+		  "lang": "en",
+		  "name": "English",
+		  "path": "lang/en.json"
+		}
+	],
 	"packs": []
 }

@@ -2,12 +2,12 @@
 	<h2 style="display:flex;align-items:center">
 		<span style="flex:1 0">{{name}}</span>
 		{{#if isGM}}
-		<button id="edit" title="Edit archive data." style="flex:0 0 auto;margin:0.25em 0;width:32px"><i class="fas fa-pencil-alt"></i></button>
-		<button id="import" title="Import archive to chat." style="flex:0 0 auto;margin:0.25em 0 0.25em 0.25em;width:auto"><i class="fa-solid fa-file-import"></i></button>
-		<button id="merge" title="Merge with another archive." style="flex:0 0 auto;margin:0.25em 0 0.25em 0.25em;width:auto"><i class="fas fa-sitemap" style="margin:0"></i></button>
+		<button id="edit" title="{{localize "CA.EditTooltip"}}" style="flex:0 0 auto;margin:0.25em 0;width:32px"><i class="fas fa-pencil-alt"></i></button>
+		<button id="import" title="{{localize "CA.ImportTooltip"}}" style="flex:0 0 auto;margin:0.25em 0 0.25em 0.25em;width:auto"><i class="fa-solid fa-file-import"></i></button>
+		<button id="merge" title="{{localize "CA.MergeTooltip"}}" style="flex:0 0 auto;margin:0.25em 0 0.25em 0.25em;width:auto"><i class="fas fa-sitemap" style="margin:0"></i></button>
 		{{/if}}
 	</h2>
 	<ol id="chat-log">
 	</ol>
-	<button id="al-save-changes"><i class="fas fa-save"></i> Save Changes</button>
+	<button id="al-save-changes"><i class="fas fa-save"></i> {{localize "CA.SaveChanges"}}</button>
 </section>

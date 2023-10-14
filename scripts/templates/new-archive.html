@@ -1,31 +1,31 @@
 <form class="archive-new">
 	<table>
 		<tr>
-			<td><label for="ca-name">Archive Name: </label></td>
-			<td><input id="ca-name" type="text" name="name" placeholder="Unnamed Archive" class="active" data-dtype="String"></td>
+			<td><label for="ca-name">{{localize "CA.ArchiveName"}}: </label></td>
+			<td><input id="ca-name" type="text" name="name" placeholder="{{localize "CA.ArchiveNameHint"}}" class="active" data-dtype="String"></td>
 		</tr>
 		<tr>
 			<td><input id="ca-visible" type="checkbox" name="visible" checked></td>
-			<td><label for="ca-visible">Visible to players</label></td>
+			<td><label for="ca-visible">{{localize "CA.VisibleToPlayers"}}</label></td>
 		</tr>
 		<tr>
 			<td><input id="ca-all" type="radio" name="date-or-all" value="all" class="active" data-dtype="String" checked></td>
-			<td><label for="ca-all">Archive entire chat log</label></td>
+			<td><label for="ca-all">{{localize "CA.ArchiveEntireLog"}}</label></td>
 		</tr>
 		<tr>
 			<td><input id="ca-date" type="radio" name="date-or-all" value="date" class="active" data-dtype="String"></td>
-			<td><label for="ca-date">Archive a date range</label></td>
+			<td><label for="ca-date">{{localize "CA.ArchiveDateRange"}}</label></td>
 		</tr>
 		<tr>
-			<td><label>From Date: </label></td>
+			<td><label>{{localize "CA.FromDate"}}: </label></td>
 			<td><input id="ca-from" type="datetime-local" name="from" disabled></td>
 		</tr>
 		<tr>
-			<td><label>To Date: </label></td>
+			<td><label>{{localize "CA.ToDate"}}: </label></td>
 			<td><input id="ca-to" type="datetime-local" name="to" disabled></td>
 		</tr>
 		<tr>
-			<td colspan="2" style="padding:0; padding-top:5px"><button type="submit" style="width:100%" name="submit"><i class="fas fa-archive"></i> Save Archive</button></td>
+			<td colspan="2" style="padding:0; padding-top:5px"><button type="submit" style="width:100%" name="submit"><i class="fas fa-archive"></i> {{localize "CA.SaveArchive"}}</button></td>
 		</tr>
 	</table>
 </form>

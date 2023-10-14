@@ -36,9 +36,9 @@ Hooks.on("setup", () => {
 export function registerSettings(){
 	//Creates the menu that allows the user to choose a folder.
 	game.settings.registerMenu("xanders-chat-archive", "archiveFolderName", {
-		name: 'Choose Archive Folder',
-		label: 'Choose Archive Folder',
-		hint: 'Will allow you to choose the folder where you would like to store your archive data.',
+		name: game.i18n.localize("CA.ChooseArchiveFolder"),
+		label: game.i18n.localize("CA.ChooseArchiveFolder"),
+		hint: game.i18n.localize("CA.ChooseArchiveFolderHint"),
 		restricted: true,
 		type: ArchiveFolderMenu
 	});
@@ -47,8 +47,8 @@ export function registerSettings(){
 	game.settings.register("xanders-chat-archive", "hideExport", {
 		config: true,
 		scope: "world",
-		name: "Hide Chat Export Button",
-		hint: "This will remove the \"Export Chat Log\" button, leaving only the archive button.",
+		name: game.i18n.localize("CA.HideChatExportButton"),
+		hint: game.i18n.localize("CA.HideChatExportButtonHint"),
 		type: Boolean,
 		default: false,
 		onChange: (newValue) => {
@@ -95,8 +95,8 @@ export function registerSettings(){
 //When the chat log is fully rendered, the "archive chat log" button is added, and the "export chat log" button is removed if necessary.
 Hooks.on('renderChatLog', (event, html) => {
 	//Creating the jQuery archive button.
-	const archiveButton = $(`<a class="button chat-archive" title="Archive Chat Log"><i class="fas fa-archive"></i></a>`);
-	
+	const archiveButton = $(`<a class="button chat-archive" title="` + game.i18n.localize("CA.ArchiveChatLog") + `"><i class="fas fa-archive"></i></a>`);
+
 	//Implementing the archive button click functionality.
 	archiveButton.on('click', () => {
 		//If the form already exists, then it is brought to the top. Otherwise a new form is made.
@@ -121,8 +121,10 @@ Hooks.on('renderChatLog', (event, html) => {
 Hooks.on('renderSettings', (event, html) => {
 	//Creating the jQuery view archvies button
 	const archiveManagerHtml = $(`<div id="df-chat-enhance-settings" style="margin:0">
-								    <button data-action="archive"><i class="fas fa-archive"></i> View Chat Archives</button>
+								    <button data-action="archive"><i class="fas fa-archive"></i> ` + game.i18n.localize("CA.ViewChatArchives") + `</button>
                                   </div>`);
+
+								  
 
 	//Implementing the view archives button click functionality.
 	archiveManagerHtml.on('click', () => {

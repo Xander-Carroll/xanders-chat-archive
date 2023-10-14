@@ -72,12 +72,12 @@ export class ChatArchiveViewer extends Application {
 
         setTimeout(async () => {
             const dialog = new Dialog({
-                title: "Edit Archive Data",
+                title: game.i18n.localize("CA.EditArchiveData"),
                 content: await renderTemplate("modules/xanders-chat-archive/scripts/templates/archive-editor.html", data),
                 buttons: {
                     save: {
                         icon: '<i class="fas fa-save"></i>',
-                        label: 'Save Edits',
+                        label: game.i18n.localize("CA.SaveEdits"),
                         callback: async (html) => {
                             this.archive.name = $(html).find('#name').val();
                             this.archive.visible = $(html).find('#visible').is(':checked');
@@ -89,7 +89,7 @@ export class ChatArchiveViewer extends Application {
                     },
                     close: {
                         icon: '<i class="fas fa-times"></i>',
-                        label: 'Cancel Edits',
+                        label: game.i18n.localize("CA.CancelEdits"),
                         callback: async () => {
                             await dialog.close();
                         }
@@ -107,12 +107,12 @@ export class ChatArchiveViewer extends Application {
 
         //Warning the user if this is the only archive.
         if (logs.length == 1) {
-            ui.notifications.info("There are no other archives to merge with.");
+            ui.notifications.info(game.i18n.localize("CA.NoOtherArchives"));
             return;
         }
 
         const dialog = new Dialog({
-            title: "Merge Archives",
+            title: game.i18n.localize("CA.MergeArchives"),
             default: 'merge',
             content: await renderTemplate('modules/xanders-chat-archive/scripts/templates/archive-merge.html', {
                 id: this.archive.id,
@@ -122,12 +122,12 @@ export class ChatArchiveViewer extends Application {
             buttons: {
                 cancel: {
                     icon: '<i class="fas fa-times"></i>',
-                    label: 'Cancel Merge',
+                    label: game.i18n.localize("CA.CancelMerge"),
                     callback: async () => await dialog.close()
                 },
                 merge: {
                     icon: '<i class="fas fa-sitemap"></i>',
-                    label: 'Finish Merge',
+                    label: game.i18n.localize("CA.FinishMerge"),
                     callback: async (html) => {
                         const id = $(html).find('#archive').val();
                         if (!id) return;
@@ -199,12 +199,12 @@ export class ChatArchiveViewer extends Application {
         deleteButton.hide();
         deleteButton.on('click', async () => {
             if (deletionList.length === this.messages.length) {
-                ui.notifications.warn("You can't delete every chat message from the archive.");
+                ui.notifications.warn(game.i18n.localize("CA.LeaveOneChat"));
                 return;
             }
             Dialog.confirm({
-                title: "Delete Chat Messages From Archive",
-                content: "<p>Are you sure that you want to delte these messages?</p>",
+                title: game.i18n.localize("CA.DeleteFromArchive"),
+                content: "<p>" + game.i18n.localize("CA.DeleteChatConfirm") + "</p>",
                 defaultYes: false,
                 yes: async () => {
                     for (const id of deletionList) {

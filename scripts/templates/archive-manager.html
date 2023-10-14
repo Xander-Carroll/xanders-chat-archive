@@ -1,17 +1,17 @@
 <section id="ca-manager">
-	<p class="ca-no-items" style="text-align:center">No Chat Logs Saved</p>
+	<p class="ca-no-items" style="text-align:center">{{localize "CA.NoLogsSaved"}}</p>
 	<ol id="ca-archives">
 		{{#each messages}}
 		<li class="ca-archive-item" data-id="{{id}}">
 			<div>
 				<a class="button ca-view" data-type="view" data-id="{{id}}"><i class="fas fa-eye"></i><span>{{name}}</span></a>
-				{{#if visible}}<i class="ca-visible fas fa-users" title="Visible to Players"></i>{{/if}}
+				{{#if visible}}<i class="ca-visible fas fa-users" title="{{localize "CA.VisibleToPlayers"}}"></i>{{/if}}
 				{{#if ../isGM}}<a class="button ca-delete" data-type="delete" data-id="{{id}}"><i class="fas fa-trash"></i></a>{{/if}}
 			</div>
 		</li>
 		{{/each}}
 	</ol>
 	{{#if isGM}}
-	<button id="ca-delete-all"><i class="fas fa-trash"></i> Delete All</button>
+	<button id="ca-delete-all"><i class="fas fa-trash"></i> {{localize "CA.DeleteAll"}}</button>
 	{{/if}}
 </section>

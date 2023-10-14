@@ -18,7 +18,7 @@ export class NewChatArchiveDialog extends FormApplication{
             submitOnClose: false,
 			submitOnChange: false,
 			closeOnSubmit: true,
-            title: "Create New Chat Archive"
+            title: game.i18n.localize("CA.CreateNewArchive")
         });
     }
 
@@ -30,7 +30,7 @@ export class NewChatArchiveDialog extends FormApplication{
 
         //If no name was given, the default name is used.
 		if (!name) {
-			name = "Unnamed Archive"
+			name = game.i18n.localize("CA.DefaultArchiveName");
 		}
 
         //Determining if the archive should be visible to players.
@@ -46,7 +46,7 @@ export class NewChatArchiveDialog extends FormApplication{
 
             //If either the from or to date is missing, then an error is thrown.
 			if (isNaN(fromDate) || isNaN(toDate)) {
-				ui.notifications.warn("You must include both to and from dates when using the range option.");
+				ui.notifications.warn(game.i18n.localize("CA.TooAndFromDates"));
 				throw Error('MissingDate');
 			}
 
@@ -56,7 +56,7 @@ export class NewChatArchiveDialog extends FormApplication{
 
         //If the date range selected did not include any messages, then no archive is made.
         if (chats.size <= 0){
-            ui.notifications.warn("No messages were found in the given range.");
+            ui.notifications.warn(game.i18n.localize("CA.NoChatsFound"));
             throw Error('MissingMessage');
         }
 

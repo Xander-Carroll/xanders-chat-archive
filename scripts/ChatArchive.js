@@ -171,7 +171,7 @@ export class ArchiveFolderMenu extends FormApplication {
 		return mergeObject(super.defaultOptions, {
             template: "modules/xanders-chat-archive/scripts/templates/archive-folder.html",
             minimizable: false,
-            title: "Archive Folder Location",
+            title: game.i18n.localize("CA.ArchiveFolderLocation"),
 			classes: ["archive-folder-picker"],
             resizable: true,
 			submitOnClose: false,
@@ -208,7 +208,7 @@ export class ArchiveFolderMenu extends FormApplication {
 		html.find('label>button').on('click', async event => {
 			event.preventDefault();
 			const fp = new FilePicker({
-				title: 'Pick an Archive Folder',
+				title: game.i18n.localize("CA.PickArchiveFolder"),
 				type: 'folder',
 				activeSource: this.source,
 				field: input,
