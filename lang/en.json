@@ -30,7 +30,7 @@
     "CA.DeleteChatConfirm": "Are you sure that you want to delte these messages?",
     "CA.DeleteAllArchives": "Delete All Archives",
     "CA.DeleteAllArchivesConfirm1": "<p>Are you sure that you want to delete all archives?</p><p><b>This can not be undone.</b></p>",
-    "CA.DeleteAllArchivesConfirm2": "<p>Are you sure that you want to delete all archives?</p><p><b>This can not be undone.</b></p>",
+    "CA.DeleteAllArchivesConfirm2": "<p>This is your last chance.</p><p><b>Are you completly sure?</b></p>",
     "CA.AllArchivesDeleted": "All archives have been deleted.",
     "CA.NoArchiveExists": "No archive with the given ID exists.",
     "CA.DeleteArchive": "Delete Archive",

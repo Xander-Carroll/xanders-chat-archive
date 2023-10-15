@@ -1,4 +1,8 @@
 <section id="ca-manager">
+	<section>
+		<a id="ca-sort-asc" class="button" {{#if reverseSort}}style="display:none"{{/if}}><i class="fas fa-sort-amount-down-alt"></i> A-Z</a>
+		<a id="ca-sort-dsc" class="button" {{#unless reverseSort}}style="display:none"{{/unless}}><i class="fas fa-sort-amount-up"></i> Z-A</a>
+	</section>
 	<p class="ca-no-items" style="text-align:center">{{localize "CA.NoLogsSaved"}}</p>
 	<ol id="ca-archives">
 		{{#each messages}}

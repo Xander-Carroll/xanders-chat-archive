@@ -42,7 +42,6 @@ Notable changes for users include:
 Features that were present in DF's module, but that were not included in this module are:
 - Export chat log to HTML file
 - Print chat log
-- Reverse alphabetical sort archive manager.
 
 Notable changes for developers include:
 - The IDs for chat archives are now 16 character UUIDs, just like every other ID in foundry.

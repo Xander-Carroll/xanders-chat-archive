@@ -85,6 +85,14 @@ export function registerSettings(){
 			}
 		}
 	});
+
+	//The variable which determines if the chat archives are sorted in ascending or descending order.
+	game.settings.register("xanders-chat-archive", "archiveReverseSort", {
+		scope: 'client',
+		config: false,
+		type: Boolean,
+		default: false
+	});
 }
 
 //When the chat log is fully rendered, the "archive chat log" button is added, and the "export chat log" button is removed if necessary.

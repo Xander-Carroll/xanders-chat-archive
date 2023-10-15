@@ -39,10 +39,14 @@ export class ManageChatArchiveDialog extends FormApplication{
         //Sorting the logs based on their name.
 		messages = messages.sort((a, b) => a.name.localeCompare(b.name));
 
+		//Determining if the message order should be reversed.
+		const reverseSort = game.settings.get("xanders-chat-archive", "archiveReverseSort");		
+
         //Getting the data that should be fead to the html template.
 		mergeObject(data, {
-			messages: messages,
-			isGM: game.user.isGM
+			messages: reverseSort ? messages.reverse() : messages,
+			isGM: game.user.isGM,
+			reverseSort
         });
 
 		return data;
@@ -58,6 +62,9 @@ export class ManageChatArchiveDialog extends FormApplication{
 		//Adding functionality for the view and delete buttons.
 		html.find('a[data-type="view"]').each((i, element) => { this._subscribeView($(element), this); });
 		html.find('a[data-type="delete"]').each((i, element) => { this._subscribeDelete($(element), this); });
+
+		//Determines if the archives should be sorted in ascending or descending order.
+		this._sortDirection(html);
 
 		//When the delete all button is pressed, the user must confirm that they actually want to delete all logs.
 		html.find('#ca-delete-all').on('click', () => {this._subscribeDeleteAll()});
@@ -131,6 +138,27 @@ export class ManageChatArchiveDialog extends FormApplication{
 					form.render();
 				}
 			});
+		});
+	}
+
+	//Used to sort the archives in ascending or descending order.
+	_sortDirection(html){
+		//Finding the sort ascending / sort descending button.
+		const asc = html.find('#ca-sort-asc');
+		const dsc = html.find('#ca-sort-dsc');
+
+		//Toggles the button, changes the setting, and re-renders the form.
+		asc.on('click', async () => {
+			game.settings.set("xanders-chat-archive", "archiveReverseSort", true);
+			asc.hide();
+			dsc.show();
+			this.render();
+		});
+		dsc.on('click', async () => {
+			game.settings.set("xanders-chat-archive", "archiveReverseSort", false);
+			dsc.hide();
+			asc.show();
+			this.render();
 		});
 	}
 }
